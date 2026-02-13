@@ -96,6 +96,11 @@ If already bound, emit a warning mentioning SCOPE (string)."
   ;; Enable GPTel's expert/power-user commands.
   (setq gptel-expert-commands t)
 
+  (add-hook 'gptel-mode-hook #'gptel-highlight-mode)
+
+  ;; Choose highlighting methods.
+  (setq gptel-highlight-methods '(fringe face))
+
   (defgroup boost-gptel nil
     "Tweaks GPTel."
     :group 'applications

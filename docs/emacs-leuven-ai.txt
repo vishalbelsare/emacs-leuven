@@ -188,6 +188,11 @@ Useful functions:
 
   ;; Enable GPTel's expert/power-user commands.
   (setq gptel-expert-commands t)
+
+  (add-hook 'gptel-mode-hook #'gptel-highlight-mode)
+
+  ;; Choose highlighting methods.
+  (setq gptel-highlight-methods '(fringe face))
 #+end_src
 
 *** Prompt / response formatting (Org mode style)
