@@ -25,6 +25,10 @@ emit a warning when the feature can't be loaded."
 (add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
 
 (with-eval-after-load 'org
+  ;; Tab width in Org files must be 8.
+  (add-hook 'org-mode-hook
+            (lambda () (setq-local tab-width 8)))
+
   ;; Global keymap definitions.
   (define-key global-map (kbd "C-c l") #'org-store-link)
   (define-key global-map (kbd "C-c c") #'org-capture)
