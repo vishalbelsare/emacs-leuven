@@ -384,7 +384,7 @@ If ~/ai-prompts/write-commit-message.txt exists, use its contents as the system 
       (user-error "[No content to analyze]"))
     (let* ((prompt-file boost-gptel-commit-prompt-file)
            (default-prompt
-            "Write a concise commit message (imperative mood, ≤72 char subject line) for this diff:\n\n")
+            "Write a commit message (imperative mood, ≤72 char subject line) for this diff:\n\n")
            (system-prompt
             (if (file-readable-p prompt-file)
                 (with-temp-buffer
