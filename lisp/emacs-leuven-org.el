@@ -2421,25 +2421,18 @@ parent."
 (message "14.11 (org)Key bindings and useful functions")
 
 (with-eval-after-load 'ob-core
-  (defun lvn--org-babel-recenter-advice (&rest _args)
+  (defun boost--org-babel-recenter-advice (&rest _)
     "Recenter after jumping to a source block."
-    (recenter))
+    (when (and (derived-mode-p 'org-mode)
+               ;; Avoid indirect buffers or special windows.
+               (get-buffer-window (current-buffer)))
+      (recenter)))
 
-  (advice-add 'org-babel-next-src-block :after #'lvn--org-babel-recenter-advice)
-  (advice-add 'org-babel-previous-src-block :after #'lvn--org-babel-recenter-advice))
+  (dolist (fn '(org-babel-next-src-block
+                org-babel-previous-src-block))
+    (advice-add fn :after #'boost--org-babel-recenter-advice)))
 
 ;;* 15 (info "(org)Miscellaneous")
-
-;; From Dan Davison.
-(defun lvn-switch-to-org-scratch ()
-  "Switch to a temporary Org buffer. If the region is active, insert its contents."
-  (interactive)
-  (let ((contents (and (use-region-p)
-                       (buffer-substring (region-beginning)
-                                         (region-end)))))
-    (find-file "/tmp/org-scratch.org")
-    (when contents
-      (insert contents))))
 
 (defun lvn-org-check-property-drawers ()
   "Check for erroneous 'PROPERTIES' drawers in Org mode headlines."
