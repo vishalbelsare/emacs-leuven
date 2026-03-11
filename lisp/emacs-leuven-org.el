@@ -573,21 +573,23 @@ emit a warning when the feature can't be loaded."
 (setq org-fast-tag-selection-single-key t)
 
 ;; Remove redundant tags of headlines.
-(defun lvn-org-remove-redundant-local-tags ()
-  "Remove locally assigned tags that are already inherited from
-a parent headline."
+(defun boost-org-remove-redundant-local-tags ()
+  "Remove locally assigned tags that are already inherited."
   (interactive)
   (when (derived-mode-p 'org-mode)
     (save-excursion
       (org-map-entries
        (lambda ()
-         (let* ((all-tags (org-get-tags))
-                (inherited-tags (seq-filter (lambda (tag) (get-text-property 0 'inherited tag)) all-tags))
-                (local-tags (seq-difference all-tags inherited-tags)))
+         (let* ((local-tags (org-get-tags nil t))
+                (inherited-tags
+                 (save-excursion
+                   (if (org-up-heading-safe)
+                       (org-get-tags)
+                     (bound-and-true-p org-file-tags)))))
            (dolist (tag local-tags)
              (when (member tag inherited-tags)
                (org-toggle-tag tag 'off)))))
-       t nil))))
+       t 'file))))
 
 ;;* 7 (info "(org)Properties and Columns")
 
