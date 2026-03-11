@@ -2763,7 +2763,7 @@ BACKEND is the current export backend."
           (push (cons mode t) mode-states)
           (funcall mode -1)))
       ;; Perform buffer updates only if relevant content exists.
-      (lvn-org-remove-redundant-local-tags) ; Remove redundant local tags.
+      (boost-org-remove-redundant-local-tags) ; Remove redundant local tags.
       (measure-time "Realigned all tags" (org-align-tags :all))
       (when (org-element-map (org-element-parse-buffer) 'dynamic-block #'identity nil t)
         ;; Skip unnecessary updates: update only if dynamic blocks exist.
