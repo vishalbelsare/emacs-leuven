@@ -1477,11 +1477,13 @@ Examples:
 
 (with-eval-after-load 'org-agenda
 
-  (defun lvn--org-agenda-switch-to-advice (&rest _)
-    "Recenter after jumping to the file which contains the item at point."
-    (recenter))
+  (defun boost--org-agenda-switch-to-recenter (&rest _)
+    "Recenter after jumping to the file containing the agenda item."
+    (when (get-buffer-window (current-buffer))
+      ;; Prevent recentering when no window displays the buffer.
+      (recenter)))
 
-  (advice-add 'org-agenda-switch-to :after #'lvn--org-agenda-switch-to-advice)
+  (advice-add 'org-agenda-switch-to :after #'boost--org-agenda-switch-to-recenter)
 
   (add-hook 'org-agenda-finalize-hook
             (lambda ()
