@@ -16,31 +16,31 @@
    'org-agenda-custom-commands
    '("F" "Fabrice GTD Dashboard"
      ((tags-todo "+urgent|PRIORITY=\"A\"|DEADLINE<=\"<+3d>\"-SCHEDULED>=\"<tomorrow>\""
-                 ((org-agenda-overriding-header "‼ À faire MAINTENANT")
+                 ((org-agenda-overriding-header "‼ Do IMMEDIATELY")
                   (org-agenda-sorting-strategy '(deadline-up priority-down effort-up category-keep))))
-
-      (tags-todo "TODO=\"NEXT\"-SCHEDULED>=\"<tomorrow>\""
-                 ((org-agenda-overriding-header "➜ Prochaines actions")
-                  (org-agenda-sorting-strategy '(priority-down deadline-up effort-up category-keep))))
-
-      (tags-todo "TODO=\"STRT\""
-                 ((org-agenda-overriding-header "▶ En cours")
-                  (org-agenda-sorting-strategy '(priority-down deadline-up effort-up category-keep))))
-
-      (tags-todo "TODO=\"WAIT\""
-                 ((org-agenda-overriding-header "Ⅱ En attente")
-                  (org-agenda-sorting-strategy '(deadline-up priority-down category-keep))))
 
       (agenda ""
               ((org-agenda-span 'week)
                (org-agenda-start-day "+0d")               ; "+0d" si tu veux inclure aujourd'hui
-               (org-agenda-overriding-header "▦ 7 prochains jours")
+               (org-agenda-overriding-header "▦ Next 7 Days")
                (org-deadline-warning-days 7)
                (org-agenda-sorting-strategy '(time-up deadline-up priority-down category-keep))
                (org-agenda-entry-types '(:scheduled :deadline :sexp))))
 
+      (tags-todo "TODO=\"STRT\""
+                 ((org-agenda-overriding-header "▶ In Progress")
+                  (org-agenda-sorting-strategy '(priority-down deadline-up effort-up category-keep))))
+
+      (tags-todo "TODO=\"NEXT\"-SCHEDULED>=\"<tomorrow>\""
+                 ((org-agenda-overriding-header "➜ Next Actions")
+                  (org-agenda-sorting-strategy '(priority-down deadline-up effort-up category-keep))))
+
+      (tags-todo "TODO=\"WAIT\""
+                 ((org-agenda-overriding-header "Ⅱ Waiting For")
+                  (org-agenda-sorting-strategy '(deadline-up priority-down category-keep))))
+
       (tags-todo "TODO=\"TODO\"|TODO=\"MAYB\"-PRIORITY=\"A\"-urgent-SCHEDULED>=\"<tomorrow>\""
-                 ((org-agenda-overriding-header "⋯ À clarifier / planifier")
+                 ((org-agenda-overriding-header "⋯ To Clarify/Plan")
                   (org-agenda-sorting-strategy '(priority-down category-keep effort-up)))))
 
      ;; options globales pour ce custom agenda
