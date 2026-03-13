@@ -1,17 +1,17 @@
 ;; FNI Org agenda dashboard
 
-(defun fni-org-agenda-dashboard ()
-  "Dashboard GTD centré sur FNI-task-list.org"
-  (interactive)
-  (dolist (buf (buffer-list))
-    (with-current-buffer buf
-      (when (eq major-mode 'org-agenda-mode)
-        (kill-buffer buf))))
-  (let ((org-agenda-files '("~/org/FNI-task-list.org"
-                            "~/org/51-People-Calendar.org")))
-    (org-agenda nil "F")))
+(with-eval-after-load 'org-agenda
+  (defun fni-org-agenda-dashboard ()
+    "Dashboard GTD centré sur FNI-task-list.org"
+    (interactive)
+    (dolist (buf (buffer-list))
+      (with-current-buffer buf
+        (when (eq major-mode 'org-agenda-mode)
+          (kill-buffer buf))))
+    (let ((org-agenda-files '("~/org/FNI-task-list.org"
+                              "~/org/51-People-Calendar.org")))
+      (org-agenda nil "F")))
 
-(with-eval-after-load 'org
   (add-to-list
    'org-agenda-custom-commands
    '("F" "Fabrice GTD Dashboard"
