@@ -2631,8 +2631,6 @@ Merged into:
 #+begin_src emacs-lisp
 (progn
 
-  ;; (setq org-agenda-custom-commands nil)
-
   (add-to-list 'org-agenda-custom-commands
                '("0" "Calendar for today" ; For the events.
                  ((agenda ""))
@@ -2742,8 +2740,6 @@ Chercher l'erreur :
 #+begin_src emacs-lisp
 (progn
 
-  ;; (setq org-agenda-custom-commands nil)
-
   (add-to-list 'org-agenda-custom-commands
                '("E1" "Maybe/Someday with a SCHEDULED date"
                  ((tags-todo "TODO={MAYB}"))
@@ -2845,12 +2841,12 @@ devraient être considérés comme erronés...
 Group by category:
 
 #+begin_src emacs-lisp
-(setq org-agenda-custom-commands
-      '(("g" "Grouped agenda by category (or derived from filename)"
-         ((agenda "")
-          (alltodo ""
-                   ((org-super-agenda-groups
-                     '((:auto-category t)))))))))
+(add-to-list 'org-agenda-custom-commands
+             '("c" "Grouped agenda by category (or derived from filename)"
+               ((agenda "")
+                (alltodo ""
+                         ((org-super-agenda-groups
+                           '((:auto-category t))))))))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -2899,14 +2895,13 @@ Group by category:
 #+end_src
 
 #+begin_src emacs-lisp
-(setq org-agenda-custom-commands
-      '(("g" "Grouped Agenda by Tag"
-         ((alltodo ""
-                   ((org-super-agenda-groups
-                     '((:name "💼 Work"     :tag "work")
-                       (:name "🏠 Personal" :tag "personal")
-                       (:name "📌 Other"    :discard nil)))  ;; catch everything else
-                    ))))))
+(add-to-list 'org-agenda-custom-commands
+             '("g" "Grouped Agenda by Tag"
+               ((alltodo ""
+                         ((org-super-agenda-groups
+                           '((:name " Work"     :tag "work")
+                             (:name "☕ Personal" :tag "personal")
+                             (:name "➤ Other"    :discard nil))))))))  ;; catch everything else
 #+end_src
 
 * COMMENT Notes

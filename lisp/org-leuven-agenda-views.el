@@ -1144,12 +1144,12 @@ If ROOT-DIR is not provided, it defaults to `~/.dotfiles/`."
 (when (boost--try-require 'org-super-agenda)
   (org-super-agenda-mode 1))
 
-(setq org-agenda-custom-commands
-      '(("g" "Grouped agenda by category (or derived from filename)"
-         ((agenda "")
-          (alltodo ""
-                   ((org-super-agenda-groups
-                     '((:auto-category t)))))))))
+(add-to-list 'org-agenda-custom-commands
+             '("c" "Grouped agenda by category (or derived from filename)"
+               ((agenda "")
+                (alltodo ""
+                         ((org-super-agenda-groups
+                           '((:auto-category t))))))))
 
 (let ((org-super-agenda-groups
        '(;; Each group has an implicit boolean OR operator between its selectors.
@@ -1194,11 +1194,10 @@ If ROOT-DIR is not provided, it defaults to `~/.dotfiles/`."
          )))
   (org-agenda nil "a"))
 
-(setq org-agenda-custom-commands
-      '(("g" "Grouped Agenda by Tag"
-         ((alltodo ""
-                   ((org-super-agenda-groups
-                     '((:name "💼 Work"     :tag "work")
-                       (:name "🏠 Personal" :tag "personal")
-                       (:name "📌 Other"    :discard nil)))  ;; catch everything else
-                    ))))))
+(add-to-list 'org-agenda-custom-commands
+             '("g" "Grouped Agenda by Tag"
+               ((alltodo ""
+                         ((org-super-agenda-groups
+                           '((:name " Work"     :tag "work")
+                             (:name "☕ Personal" :tag "personal")
+                             (:name "➤ Other"    :discard nil))))))))  ;; catch everything else
