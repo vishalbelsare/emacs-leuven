@@ -65,4 +65,18 @@
       (org-agenda-todo-ignore-scheduled 'future)
       (org-agenda-todo-ignore-deadlines 'near)   ; ou nil si tu veux tout voir
       (org-agenda-tags-todo-honor-ignore-options t)
-      (org-agenda-dim-blocked-tasks nil)))))
+      (org-agenda-dim-blocked-tasks nil))))
+
+  (defun fni-org-agenda-dashboard-current-buffer ()
+    "Dashboard GTD basé sur le fichier du buffer courant."
+    (interactive)
+    (unless buffer-file-name
+      (user-error "Le buffer courant n'est pas associé à un fichier"))
+
+    (dolist (buf (buffer-list))
+      (with-current-buffer buf
+        (when (eq major-mode 'org-agenda-mode)
+          (kill-buffer buf))))
+
+    (let ((org-agenda-files (list buffer-file-name)))
+      (org-agenda nil "F"))))
