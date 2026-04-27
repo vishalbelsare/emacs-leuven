@@ -1,13 +1,18 @@
-;; FNI Org agenda dashboard
+;;; FNI Org agenda dashboard
 
 (with-eval-after-load 'org-agenda
-  (defun fni-org-agenda-dashboard ()
-    "Dashboard GTD centré sur FNI-task-list.org"
-    (interactive)
+
+  (defun fni-org-agenda-kill-agenda-buffers ()
+    "Kill all Org Agenda buffers."
     (dolist (buf (buffer-list))
       (with-current-buffer buf
         (when (eq major-mode 'org-agenda-mode)
-          (kill-buffer buf))))
+          (kill-buffer buf)))))
+
+  (defun fni-org-agenda-dashboard ()
+    "GTD dashboard focused on FNI agenda files."
+    (interactive)
+    (fni-org-agenda-kill-agenda-buffers)
     (let ((org-agenda-files '("~/org/FNI-task-list.org"
                               "~/org/51-People-Calendar.org")))
       (org-agenda nil "F")))
@@ -27,8 +32,8 @@
                    '(deadline-up priority-down effort-up category-keep))))
 
       (agenda ""
-              ((org-agenda-span 'week)
-               (org-agenda-start-day "+0d")               ; "+0d" si tu veux inclure aujourd'hui
+              ((org-agenda-span 7)
+               (org-agenda-start-day "+0d") ; "+0d" to include today.
                (org-agenda-overriding-header "▦ Next 7 Days")
                (org-deadline-warning-days 7)
                (org-agenda-sorting-strategy
@@ -41,7 +46,7 @@
                   (org-agenda-sorting-strategy
                    '(priority-down deadline-up effort-up category-keep))))
 
-      (tags-todo "TODO=\"NEXT\"-PRIORITY=\"A\"-SCHEDULED>=\"<tomorrow>\""
+      (tags-todo "TODO=\"NEXT\"-PRIORITY=\"A\"-urgent-SCHEDULED>=\"<tomorrow>\""
                  ((org-agenda-overriding-header "➜ Next Actions")
                   (org-agenda-sorting-strategy
                    '(priority-down deadline-up effort-up category-keep))))
@@ -56,7 +61,7 @@
                   (org-agenda-sorting-strategy
                    '(priority-down category-keep effort-up)))))
 
-     ;; options globales pour ce custom agenda
+     ;; Global options for this custom agenda.
      ((org-agenda-prefix-format
        '((agenda  . " %-12:c%?-12t %e ")
          (todo    . " %-12:c ")
@@ -68,15 +73,10 @@
       (org-agenda-dim-blocked-tasks nil))))
 
   (defun fni-org-agenda-dashboard-current-buffer ()
-    "Dashboard GTD basé sur le fichier du buffer courant."
+    "GTD dashboard based on the current buffer's file."
     (interactive)
     (unless buffer-file-name
-      (user-error "Le buffer courant n'est pas associé à un fichier"))
-
-    (dolist (buf (buffer-list))
-      (with-current-buffer buf
-        (when (eq major-mode 'org-agenda-mode)
-          (kill-buffer buf))))
-
+      (user-error "The current buffer is not associated with a file"))
+    (fni-org-agenda-kill-agenda-buffers)
     (let ((org-agenda-files (list buffer-file-name)))
       (org-agenda nil "F"))))
