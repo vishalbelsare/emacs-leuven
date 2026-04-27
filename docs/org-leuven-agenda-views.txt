@@ -2035,58 +2035,64 @@ level of the universal argument.
 #+end_src
 
 #+begin_src emacs-lisp
-(setq org-agenda-custom-commands
-      '(("d" "Dashboard"
-         ((tags-todo "+PRIORITY={A}"
-                     ((org-agenda-overriding-header "High Priority Tasks")))
-          (tags-todo "+DEADLINE<=\"<+7d>\"-PRIORITY={A}"
-                     ((org-agenda-overriding-header "Tasks Due This Week")))
-          (tags-todo "+SCHEDULED<=\"<+14d>\"-PRIORITY={A}"
-                     ((org-agenda-overriding-header "Scheduled Tasks (Next 14 Days)")))
-          (tags-todo "+DEADLINE>\"<+7d>\"-PRIORITY={A}"
-                     ((org-agenda-overriding-header "Future Deadlines")
-                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))  ; Skip tasks with SCHEDULED property.
-                      (org-agenda-sorting-strategy '(deadline-up))))
-          (todo "DONE|CANX"
-                ((org-agenda-overriding-header "Completed or Cancelled Tasks")
-                 (org-agenda-span 'week))))))) ; OK -- No duplicates!!!
+(add-to-list 'org-agenda-custom-commands
+             '("d" "Dashboard"
+               ((tags-todo "+PRIORITY={A}"
+                           ((org-agenda-overriding-header "High Priority Tasks")))
+                (tags-todo "+DEADLINE<=\"<+7d>\"-PRIORITY={A}"
+                           ((org-agenda-overriding-header "Tasks Due This Week")))
+                (tags-todo "+SCHEDULED<=\"<+14d>\"-PRIORITY={A}"
+                           ((org-agenda-overriding-header "Scheduled Tasks (Next 14 Days)")))
+                (tags-todo "+DEADLINE>\"<+7d>\"-PRIORITY={A}"
+                           ((org-agenda-overriding-header "Future Deadlines")
+                            (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))  ; Skip tasks with SCHEDULED property.
+                            (org-agenda-sorting-strategy '(deadline-up))))
+                (todo "DONE|CANX"
+                      ((org-agenda-overriding-header "Completed or Cancelled Tasks")
+                       (org-agenda-span 'week)))))) ; OK -- No duplicates!!!
 
-(setq org-agenda-custom-commands
-      '(("d" "Dashboard"
-         ((tags-todo "+PRIORITY={A}"
-                     ((org-agenda-overriding-header "High Priority Tasks")))
-          (tags-todo "+DEADLINE<=\"<+7d>\"-PRIORITY={A}"
-                     ((org-agenda-overriding-header "Tasks Due This Week")))
-          (tags-todo "+SCHEDULED<=\"<+14d>\"-PRIORITY={A}"
-                     ((org-agenda-overriding-header "Scheduled Tasks (Next 14 Days)")))
-          (tags-todo "+DEADLINE>\"<+7d>\"-SCHEDULED>\"<+14d>\"-PRIORITY={A}" ; Exclude tasks scheduled within the next 14 days.
-                     ((org-agenda-overriding-header "Future Deadlines")
-                      (org-agenda-sorting-strategy '(deadline-up))))
-          (todo "DONE|CANX"
-                ((org-agenda-overriding-header "Completed or Cancelled Tasks")
-                 (org-agenda-span 'week))))))) ; NOK -- Duplicates!!!
+(add-to-list 'org-agenda-custom-commands
+             '("d" "Dashboard"
+               ((tags-todo "+PRIORITY={A}"
+                           ((org-agenda-overriding-header "High Priority Tasks")))
+                (tags-todo "+DEADLINE<=\"<+7d>\"-PRIORITY={A}"
+                           ((org-agenda-overriding-header "Tasks Due This Week")))
+                (tags-todo "+SCHEDULED<=\"<+14d>\"-PRIORITY={A}"
+                           ((org-agenda-overriding-header "Scheduled Tasks (Next 14 Days)")))
+                (tags-todo "+DEADLINE>\"<+7d>\"-SCHEDULED>\"<+14d>\"-PRIORITY={A}" ; Exclude tasks scheduled within the next 14 days.
+                           ((org-agenda-overriding-header "Future Deadlines")
+                            (org-agenda-sorting-strategy '(deadline-up))))
+                (todo "DONE|CANX"
+                      ((org-agenda-overriding-header "Completed or Cancelled Tasks")
+                       (org-agenda-span 'week)))))) ; NOK -- Duplicates!!!
 #+end_src
 
 #+begin_src emacs-lisp
-(setq org-agenda-custom-commands
-      '(("h" "High priority tasks"
-         ((tags-todo "+PRIORITY={A}-SCHEDULED>=\"<today>\"-DEADLINE>=\"<today>\""
-                     ((org-agenda-overriding-header "High Priority Tasks")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled 'deadline))))
-          (tags-todo "-SCHEDULED>=\"<today>\"-DEADLINE>=\"<today>\""
-                     ((org-agenda-overriding-header "Other Current Tasks")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-if 'scheduled 'deadline)))))
-         nil)))
+(add-to-list 'org-agenda-custom-commands
+             '("h" "High priority tasks"
+               ((tags-todo "+PRIORITY={A}-SCHEDULED>=\"<today>\"-DEADLINE>=\"<today>\""
+                           ((org-agenda-overriding-header "High Priority Tasks")
+                            (org-agenda-skip-function
+                             '(org-agenda-skip-entry-if 'scheduled 'deadline))))
+                (tags-todo "-SCHEDULED>=\"<today>\"-DEADLINE>=\"<today>\""
+                           ((org-agenda-overriding-header "Other Current Tasks")
+                            (org-agenda-skip-function
+                             '(org-agenda-skip-entry-if 'scheduled 'deadline)))))
+               nil))
 #+end_src
 
 #+begin_src emacs-lisp
-(setq org-agenda-custom-commands
-      '(("p" . "Priority views")
-        ("pa" "A items" tags-todo "+PRIORITY={A}")
-        ("pb" "B items" tags-todo "+PRIORITY={B}")
-        ("pc" "C items" tags-todo "+PRIORITY={C}")))
+(add-to-list 'org-agenda-custom-commands
+             '("p" . "Priority views"))
+
+(add-to-list 'org-agenda-custom-commands
+             '("pa" "A items" tags-todo "+PRIORITY={A}"))
+
+(add-to-list 'org-agenda-custom-commands
+             '("pb" "B items" tags-todo "+PRIORITY={B}"))
+
+(add-to-list 'org-agenda-custom-commands
+             '("pc" "C items" tags-todo "+PRIORITY={C}"))
 #+end_src
 
 ** Next actions
