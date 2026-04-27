@@ -17,20 +17,26 @@
                               "~/org/51-People-Calendar.org")))
       (org-agenda nil "F")))
 
-  (defun fni-org-agenda-skip-priority-a ()
-    "Skip agenda entries whose priority is A."
-    (let ((priority (org-get-priority (thing-at-point 'line t))))
-      (when (= priority org-priority-highest)
-        (or (outline-next-heading) (point-max)))))
+  (defun fni-org-agenda-dashboard-current-buffer ()
+    "GTD dashboard based on the current buffer's file."
+    (interactive)
+    (unless buffer-file-name
+      (user-error "The current buffer is not associated with a file"))
+    (fni-org-agenda-kill-agenda-buffers)
+    (let ((org-agenda-files (list buffer-file-name)))
+      (org-agenda nil "F")))
 
+  ;; ── Custom Agenda Command ─────────────────────────────────────
   (add-to-list
    'org-agenda-custom-commands
    '("F" "Fabrice GTD Dashboard"
-     ((tags-todo "+urgent|PRIORITY=\"A\"|DEADLINE<=\"<+3d>\"-SCHEDULED>=\"<tomorrow>\""
+     (;; 1. Do IMMEDIATELY.
+      (tags-todo "+urgent|PRIORITY=\"A\"|DEADLINE<=\"<+3d>\"-SCHEDULED>=\"<tomorrow>\""
                  ((org-agenda-overriding-header "‼ Do IMMEDIATELY")
                   (org-agenda-sorting-strategy
                    '(deadline-up priority-down effort-up category-keep))))
 
+      ;; 2. Next 7 Days.
       (agenda ""
               ((org-agenda-span 7)
                (org-agenda-start-day "+0d") ; "+0d" to include today.
@@ -41,21 +47,25 @@
                (org-agenda-entry-types '(:scheduled :deadline :sexp))
                (org-agenda-skip-function #'fni-org-agenda-skip-priority-a)))
 
+      ;; 3. In Progress.
       (tags-todo "TODO=\"STRT\"-PRIORITY=\"A\""
                  ((org-agenda-overriding-header "▶ In Progress")
                   (org-agenda-sorting-strategy
                    '(priority-down deadline-up effort-up category-keep))))
 
+      ;; 4. Next Actions.
       (tags-todo "TODO=\"NEXT\"-PRIORITY=\"A\"-urgent-SCHEDULED>=\"<tomorrow>\""
                  ((org-agenda-overriding-header "➜ Next Actions")
                   (org-agenda-sorting-strategy
                    '(priority-down deadline-up effort-up category-keep))))
 
+      ;; 5. Waiting For.
       (tags-todo "TODO=\"WAIT\"-PRIORITY=\"A\""
                  ((org-agenda-overriding-header "Ⅱ Waiting For")
                   (org-agenda-sorting-strategy
                    '(deadline-up priority-down category-keep))))
 
+      ;; 6. To Clarify / Plan.
       (tags-todo "TODO=\"TODO\"|TODO=\"MAYB\"-PRIORITY=\"A\"-urgent-SCHEDULED>=\"<tomorrow>\""
                  ((org-agenda-overriding-header "⋯ To Clarify/Plan")
                   (org-agenda-sorting-strategy
@@ -68,15 +78,6 @@
          (tags    . " %-12:c ")
          (search  . " %-12:c ")))
       (org-agenda-todo-ignore-scheduled 'future)
-      (org-agenda-todo-ignore-deadlines 'near)   ; ou nil si tu veux tout voir
+      (org-agenda-todo-ignore-deadlines 'near) ; nil = show all deadlines, even distant ones.
       (org-agenda-tags-todo-honor-ignore-options t)
-      (org-agenda-dim-blocked-tasks nil))))
-
-  (defun fni-org-agenda-dashboard-current-buffer ()
-    "GTD dashboard based on the current buffer's file."
-    (interactive)
-    (unless buffer-file-name
-      (user-error "The current buffer is not associated with a file"))
-    (fni-org-agenda-kill-agenda-buffers)
-    (let ((org-agenda-files (list buffer-file-name)))
-      (org-agenda nil "F"))))
+      (org-agenda-dim-blocked-tasks nil)))))
