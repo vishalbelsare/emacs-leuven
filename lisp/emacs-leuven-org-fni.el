@@ -12,6 +12,12 @@
                               "~/org/51-People-Calendar.org")))
       (org-agenda nil "F")))
 
+  (defun fni-org-agenda-skip-priority-a ()
+    "Skip agenda entries whose priority is A."
+    (let ((priority (org-get-priority (thing-at-point 'line t))))
+      (when (= priority org-priority-highest)
+        (or (outline-next-heading) (point-max)))))
+
   (add-to-list
    'org-agenda-custom-commands
    '("F" "Fabrice GTD Dashboard"
@@ -28,8 +34,7 @@
                (org-agenda-sorting-strategy
                 '(time-up deadline-up priority-down category-keep))
                (org-agenda-entry-types '(:scheduled :deadline :sexp))
-               (org-agenda-skip-function
-                '(org-agenda-skip-entry-if 'priority ?A))))
+               (org-agenda-skip-function #'fni-org-agenda-skip-priority-a)))
 
       (tags-todo "TODO=\"STRT\"-PRIORITY=\"A\""
                  ((org-agenda-overriding-header "▶ In Progress")
